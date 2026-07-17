@@ -11,6 +11,7 @@
       "id": "nivel-1-bateria",
       "name": "NIVEL 1 · BATERÍA Y CARGA",
       "type": "narrative",
+      "character": { "name": "Andrés", "role": "Cliente en tienda" },
       "intro": "El cliente mira su celular actual, que se descarga rápido a mitad de día.",
       "cta": "Resolver la duda",
       "outro": "El cliente ya no se preocupa por quedarse sin batería.",
@@ -54,6 +55,7 @@
       "id": "nivel-3-camara",
       "name": "NIVEL 3 · CÁMARA",
       "type": "narrative",
+      "character": { "name": "Andrés", "role": "Cliente en tienda" },
       "intro": "El cliente es fotógrafo aficionado y quiere fotos nítidas, incluso de noche.",
       "cta": "Mostrar la cámara",
       "outro": "El cliente ya se imagina sus próximas fotos con el nova Y73.",
@@ -96,6 +98,7 @@
       "id": "nivel-5-pantalla",
       "name": "NIVEL 5 · PANTALLA",
       "type": "narrative",
+      "character": { "name": "Andrés", "role": "Cliente en tienda" },
       "intro": "El cliente usa mucho el celular al aire libre y se queja de que no ve bien la pantalla con el sol.",
       "cta": "Mostrar la pantalla",
       "outro": "El cliente ya no se preocupa por ver mal la pantalla al sol.",
@@ -160,9 +163,48 @@
       ]
     },
     {
-      "id": "nivel-8-cierre",
-      "name": "NIVEL 8 · CIERRE DE VENTA",
+      "id": "nivel-8-ronda-sorpresa",
+      "name": "NIVEL 8 · RONDA SORPRESA",
+      "type": "wheel",
+      "intro": "Antes de cerrar, un colega te reta con una pregunta al azar de todo lo que ya repasaste. Gira la ruleta y responde la que te toque.",
+      "cta": "Girar la ruleta",
+      "outro": "¡Reto de la ruleta superado!",
+      "questions": [
+        {
+          "prompt": "¿Cuántas veces por semana hay que cargar el nova Y73 en promedio?",
+          "options": [
+            { "text": "2 veces por semana.", "correct": true, "feedback": "Correcto: con 6,620 mAh, el nova Y73 solo necesita 2 cargas semanales en uso normal." },
+            { "text": "Todos los días.", "correct": false, "feedback": "No — justamente su gran capacidad de batería reduce la frecuencia de carga a solo 2 veces por semana." }
+          ]
+        },
+        {
+          "prompt": "¿Qué resolución tiene la cámara principal del nova Y73?",
+          "options": [
+            { "text": "50 MP con apertura f/1.8.", "correct": true, "feedback": "Correcto: 50 MP, f/1.8, con binning de píxeles 4 en 1 de 1.4 µm para fotos nocturnas más nítidas." },
+            { "text": "108 MP con apertura f/1.4.", "correct": false, "feedback": "Esa especificación no corresponde al nova Y73 — cuidado con mezclar datos de otro modelo." }
+          ]
+        },
+        {
+          "prompt": "¿Cuánto almacenamiento interno ofrece el nova Y73 en su versión superior?",
+          "options": [
+            { "text": "256 GB.", "correct": true, "feedback": "Correcto: 256 GB, ideal para quienes usan muchas apps, fotos y juegos." },
+            { "text": "512 GB.", "correct": false, "feedback": "No — la capacidad máxima disponible para este modelo es 256 GB." }
+          ]
+        },
+        {
+          "prompt": "¿Qué certificación respalda la resistencia a caídas del nova Y73?",
+          "options": [
+            { "text": "SGS de 5 estrellas contra caídas.", "correct": true, "feedback": "Correcto: certificación SGS de 5 estrellas, resistencia a caídas de hasta 1.5 m." },
+            { "text": "Certificación militar MIL-STD-810G.", "correct": false, "feedback": "No — esa no es la certificación del nova Y73. La suya es SGS de 5 estrellas contra caídas." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nivel-9-cierre",
+      "name": "NIVEL 9 · CIERRE DE VENTA",
       "type": "narrative",
+      "character": { "name": "Andrés", "role": "Cliente en tienda" },
       "intro": "El cliente ya resolvió todas sus dudas. Es momento de cerrar la venta.",
       "cta": "Cerrar la venta",
       "outro": "¡Venta cerrada! El cliente se va convencido con su nuevo nova Y73.",
