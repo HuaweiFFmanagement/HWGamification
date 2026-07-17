@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FF Games — Anfitrión</title>
+<link rel="stylesheet" href="../engine/styles.css" />
+<style>
+  body{ margin:0; background: var(--panel); color: var(--ink); font-family: var(--font); padding: 56px 14px; }
+  .wrap{ max-width: 720px; margin:0 auto; text-align:center; }
+  .eyebrow{ color: var(--red); font-weight:700; font-size:12px; letter-spacing:.12em; text-transform:uppercase; }
+  .wrap h1{ margin:10px 0 0; font-size: 32px; font-weight:800; color: var(--black); letter-spacing:-.01em; }
+  .join-box{
+    background: var(--white); border:1px solid var(--line); border-radius: 20px;
+    padding: 32px; margin: 28px 0 36px;
+  }
+  .join-box p{ color: var(--ink-soft); margin: 4px 0 14px; font-size:14px; }
+  .join-url{ font-size: 14px; color: var(--red); word-break: break-all; font-weight:600; }
+  .lb-head{ display:flex; justify-content:space-between; align-items:center; margin: 24px 0 12px; text-align:left; }
+  .lb-head h2{ font-size:18px; margin:0; font-weight:700; color: var(--black); }
+  .lb-head .status{ font-size:12px; color: var(--ink-soft); }
+  .empty{ color: var(--ink-soft); padding: 34px 0; font-size:14px; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="eyebrow">Modo en vivo · Anfitrión</div>
+    <h1 id="game-title">Cargando juego...</h1>
+
+    <div class="join-box">
+      <p>Código de sesión</p>
+      <div class="ffg-code" id="session-code">----</div>
+      <p style="margin-top:16px;">Los jugadores entran a esta dirección con el código:</p>
+      <div class="join-url" id="join-url"></div>
+    </div>
+
+    <div class="lb-head">
+      <h2>Ranking en vivo</h2>
+      <div class="status" id="status">esperando resultados...</div>
+    </div>
+    <div class="ffg-lb" id="lb"></div>
+  </div>
+
+  <script src="../engine/results-client.js"></script>
+  <script>
+    // ⚠️ Debe coincidir con la URL usada en play.html / join.html
+    const WEB_APP_URL = ''; // ej: 'https://script.google.com/macros/s/XXXX/exec'
+
+    const params = new URLSearchParams(location.search);
+    const configUrl = params.get('config') || '../content/nova-y73-ksps.json';
+
+    // Genera un código de sesión de 4 caracteres para esta partida en vivo
+    const code = Math.random().toString(36).substring(2, 6).toUpperCase();
+    document.getElementById('session-code').textContent = code;
+
+    const joinUrl = `${location.origin}${location.pathname.replace('host.html','join.html')}?config=${encodeURIComponent(configUrl)}&code=${code}`;
+    document.getElementById('join-url').textContent = joinUrl;
+
+    fetch(configUrl).then(r => r.json()).then(cfg => {
+      document.getElementById('game-title').textContent = cfg.title || 'Juego en vivo';
+    });
+
+    const results = WEB_APP_URL ? new FFResults({ webAppUrl: WEB_APP_URL }) : null;
+    const lb = document.getElementById('lb');
+    const status = document.getElementById('status');
+
+    async function refresh() {
+      if (!results) { status.textContent = 'configura WEB_APP_URL para ver el ranking'; return; }
+      try {
+        const rows = await results.fetchSessionScores(code);
+        status.textContent = `actualizado ${new Date().toLocaleTimeString()}`;
+        if (!rows.length) { lb.innerHTML = '<div class="empty">Nadie ha terminado todavía. Comparte el código para que se unan.</div>'; return; }
+        lb.innerHTML = rows.map((r, i) => `
+          <div class="ffg-lb-row">
+            <div class="ffg-lb-rank">#${i + 1}</div>
+            <div class="ffg-lb-name">${r.playerName}${r.playerRole ? ' · ' + r.playerRole : ''}</div>
+            <div class="ffg-lb-score">${r.percent}% · ${r.score}/${r.totalQuestions}</div>
+          </div>
+        `).join('');
+      } catch (e) {
+        status.textContent = 'error al leer el ranking';
+      }
+    }
+
+    refresh();
+    setInterval(refresh, 4000); // polling simple: suficiente para un grupo jugando en vivo
+  </script>
+</body>
+</html>

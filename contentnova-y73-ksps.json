@@ -1,0 +1,185 @@
+{
+  "id": "nova-y73-ksps",
+  "title": "MISIÓN NOVA: DOMINA LOS KSP DEL Y73",
+  "intro": {
+    "eyebrow": "ENTRENAMIENTO DE PRODUCTO",
+    "story": "Un cliente indeciso está frente a tu vitrina mirando el HUAWEI nova Y73. Tiene dudas sobre batería, resistencia, cámara y pantalla. Cada vez que resuelvas una duda con el argumento correcto, ganarás una letra. Reúne las 4 letras para descubrir el código secreto de la misión.",
+    "cta": "Atender al cliente"
+  },
+  "levels": [
+    {
+      "id": "nivel-1-bateria",
+      "name": "NIVEL 1 · BATERÍA Y CARGA",
+      "type": "narrative",
+      "intro": "El cliente mira su celular actual, que se descarga rápido a mitad de día.",
+      "cta": "Resolver la duda",
+      "outro": "El cliente ya no se preocupa por quedarse sin batería.",
+      "questions": [
+        {
+          "prompt": "El cliente dice: 'Mi celular actual se me descarga rapidísimo, ya no aguanto ni medio día'. ¿Qué le respondes?",
+          "options": [
+            { "text": "Con los 6,620 mAh del nova Y73, solo necesitarás cargarlo 2 veces por semana. Podría darle hasta 2.6 días de música en línea o 1.4 días de video local.", "correct": true, "feedback": "Correcto: das el dato exacto (6,620 mAh, 2 cargas por semana) y lo conectas con un uso que el cliente reconoce. Eso vende, no solo informa." },
+            { "text": "Todos los celulares se descargan rápido, es normal.", "correct": false, "feedback": "Resignarte frente a la objeción no ayuda al cliente ni te distingue de la competencia. Siempre hay un dato que puedes usar." },
+            { "text": "Le recomiendo que compre un cargador portátil aparte.", "correct": false, "feedback": "Estás resolviendo el problema con un accesorio en vez de mostrarle que el nova Y73 ya lo soluciona de fábrica." }
+          ]
+        },
+        {
+          "prompt": "El cliente insiste: 'Es que además se demora una eternidad en cargar'. ¿Cuál es la mejor respuesta?",
+          "options": [
+            { "text": "Con la carga SuperCharge Turbo de 40 W, con solo 10 minutos de carga obtienes hasta 5 horas de reproducción de video.", "correct": true, "feedback": "Exacto. Un dato concreto y fácil de imaginar (10 minutos = 5 horas de video) resuelve la objeción de inmediato." },
+            { "text": "No carga tan rápido, pero al menos dura mucho.", "correct": false, "feedback": "Nunca le des la razón a una objeción que sí puedes desmentir con un dato real: el Y73 sí carga rápido." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nivel-2-resistencia",
+      "name": "NIVEL 2 · FRAGMENTO N",
+      "type": "mission",
+      "fragment": "N",
+      "intro": "El cliente cuenta que se le ha caído el celular varias veces y una vez lo mojó con lluvia.",
+      "cta": "Buscar el fragmento",
+      "outro": "¡Fragmento N conseguido! El cliente ya confía en la resistencia del equipo.",
+      "questions": [
+        {
+          "prompt": "¿Cuál de estas dos certificaciones respaldan la resistencia del nova Y73 frente a caídas y agua?",
+          "options": [
+            { "text": "Certificación SGS de 5 estrellas contra caídas (hasta 1.5 m) y certificación IP64 contra polvo y salpicaduras de agua.", "correct": true, "feedback": "Correcto: son certificaciones verificables por un tercero (SGS), no una promesa de marketing. Eso le da al cliente algo concreto en qué confiar." },
+            { "text": "Certificación militar MIL-STD y resistencia IP68 bajo el agua.", "correct": false, "feedback": "Cuidado: nunca inventes certificaciones. El Y73 no tiene IP68 (inmersión); su resistencia al agua es IP64 (salpicaduras y polvo)." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nivel-3-camara",
+      "name": "NIVEL 3 · CÁMARA",
+      "type": "narrative",
+      "intro": "El cliente es fotógrafo aficionado y quiere fotos nítidas, incluso de noche.",
+      "cta": "Mostrar la cámara",
+      "outro": "El cliente ya se imagina sus próximas fotos con el nova Y73.",
+      "questions": [
+        {
+          "prompt": "El cliente pregunta: '¿Y de noche cómo se ve? Mi celular actual saca fotos oscuras y borrosas'. ¿Qué le respondes?",
+          "options": [
+            { "text": "La cámara principal de 50 MP con apertura f/1.8 y binning de píxeles 4 en 1 de 1.4 µm reduce el ruido y conserva los detalles, incluso en tomas nocturnas de hasta 6 segundos con poca luz.", "correct": true, "feedback": "Correcto: mencionas la apertura, el binning de píxeles y el tiempo de exposición, que son justo los tres factores que explican una buena foto nocturna." },
+            { "text": "Todas las cámaras de gama media se ven parecido de noche, no hay mucha diferencia.", "correct": false, "feedback": "Nunca minimices una pregunta técnica del cliente: el Y73 sí tiene ventajas concretas de noche (apertura f/1.8, binning de píxeles) que vale la pena mencionar." }
+          ]
+        },
+        {
+          "prompt": "El cliente también se toma muchas selfies. ¿Qué le destacas de la cámara frontal?",
+          "options": [
+            { "text": "Cámara selfie de 8 MP con apertura f/2.0, que aumenta la entrada de luz y soporta efecto bokeh para un retrato más profesional.", "correct": true, "feedback": "Correcto: das el dato técnico (8 MP, f/2.0) y lo traduces al beneficio que le importa al cliente (mejores selfies, efecto retrato)." },
+            { "text": "La cámara frontal no es tan importante, mejor hablemos de la trasera.", "correct": false, "feedback": "Si el cliente pregunta específicamente por selfies, ignorar su pregunta para hablar de otra cosa genera desconfianza." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nivel-4-xbutton",
+      "name": "NIVEL 4 · FRAGMENTO O",
+      "type": "mission",
+      "fragment": "O",
+      "intro": "El cliente dice que le cuesta trabajo encontrar rápido sus apps favoritas cuando más las necesita.",
+      "cta": "Buscar el fragmento",
+      "outro": "¡Fragmento O conseguido! El cliente ya sabe cómo usar el X Button.",
+      "questions": [
+        {
+          "prompt": "¿Cómo funciona el X Button del nova Y73 para dar acceso rápido a apps?",
+          "options": [
+            { "text": "Se presiona el botón lateral para habilitarlo; con doble pulsación o pulsación sostenida se abre una app o servicio clave configurado.", "correct": true, "feedback": "Correcto: explicas el gesto exacto (presionar, doble pulsación, pulsación sostenida), no solo dices 'tiene un botón rápido'." },
+            { "text": "Es un botón que solo sirve para tomar fotos.", "correct": false, "feedback": "El X Button es de propósito general para accesos rápidos configurables (linterna, calculadora, contactos, etc.), no exclusivo de la cámara." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nivel-5-pantalla",
+      "name": "NIVEL 5 · PANTALLA",
+      "type": "narrative",
+      "intro": "El cliente usa mucho el celular al aire libre y se queja de que no ve bien la pantalla con el sol.",
+      "cta": "Mostrar la pantalla",
+      "outro": "El cliente ya no se preocupa por ver mal la pantalla al sol.",
+      "questions": [
+        {
+          "prompt": "El cliente dice: 'No veo nada de mi pantalla cuando hay mucho sol'. ¿Qué le respondes?",
+          "options": [
+            { "text": "La pantalla de 6.67 pulgadas del nova Y73 alcanza hasta 1,000 nits de brillo máximo, un 122% más que la generación anterior, además de 90 Hz de frecuencia de actualización.", "correct": true, "feedback": "Correcto: el brillo máximo es justo el dato que resuelve la queja específica de visibilidad bajo el sol, y agregas el dato de fluidez (90 Hz) como valor extra." },
+            { "text": "Puede subirle el brillo al máximo y ya se verá mejor.", "correct": false, "feedback": "Esa respuesta no menciona ningún dato del producto: no le da al cliente ninguna razón para preferir el nova Y73 sobre otro equipo." }
+          ]
+        },
+        {
+          "prompt": "¿Qué certificación adicional respalda la comodidad visual de esta pantalla?",
+          "options": [
+            { "text": "SGS Low Visual Fatigue A+, siendo el único dispositivo de su segmento con esta certificación.", "correct": true, "feedback": "Correcto: es un diferencial competitivo verificable frente a otros equipos del mismo segmento." },
+            { "text": "Certificación TÜV Rheinland de luz azul.", "correct": false, "feedback": "Cuidado con mezclar certificaciones de otros equipos: la certificación específica del Y73 es SGS Low Visual Fatigue A+." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nivel-6-almacenamiento",
+      "name": "NIVEL 6 · FRAGMENTO V",
+      "type": "mission",
+      "fragment": "V",
+      "intro": "El cliente dice que su celular actual siempre le dice 'memoria llena'.",
+      "cta": "Buscar el fragmento",
+      "outro": "¡Fragmento V conseguido! El cliente ya no se quedará sin espacio.",
+      "questions": [
+        {
+          "prompt": "¿Qué le ofreces al cliente para que no vuelva a quedarse sin espacio?",
+          "options": [
+            { "text": "256 GB de almacenamiento interno, ideal para todas sus apps, juegos y archivos.", "correct": true, "feedback": "Correcto: es la capacidad de almacenamiento superior disponible para este modelo, justo lo que resuelve la queja del cliente." },
+            { "text": "Puede borrar fotos viejas cada semana para liberar espacio.", "correct": false, "feedback": "Le estás pidiendo al cliente que administre un problema que el propio equipo ya resuelve con más capacidad de fábrica." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nivel-7-seguridad",
+      "name": "NIVEL 7 · FRAGMENTO A",
+      "type": "mission",
+      "fragment": "A",
+      "intro": "El cliente pregunta qué tan seguro es desbloquear el celular y proteger su información.",
+      "cta": "Buscar el fragmento",
+      "outro": "¡Fragmento A conseguido! Ya reuniste las 4 letras de la misión.",
+      "questions": [
+        {
+          "prompt": "¿Qué ventaja tiene el registro de huella por deslizamiento del nova Y73 frente al método tradicional?",
+          "options": [
+            { "text": "Se registra en 1 solo paso (en promedio 19 segundos) frente a un promedio de 22 pulsaciones y 31 segundos del método tradicional, con mayor precisión (81-83% vs 78-80%).", "correct": true, "feedback": "Correcto: comparas con datos exactos del propio material de producto, lo que hace el argumento mucho más convincente que decir 'es más fácil'." },
+            { "text": "Es exactamente igual al método tradicional, solo cambia la animación.", "correct": false, "feedback": "No es solo estético: el método de deslizamiento reduce pasos, tiempo de registro y mejora la precisión del reconocimiento." }
+          ]
+        },
+        {
+          "prompt": "¿Qué le dirías sobre la privacidad de su información personal?",
+          "options": [
+            { "text": "Con EMUI 12 tiene control total de los permisos de las apps, un Centro de Seguridad y un Centro de Privacidad para proteger sus datos.", "correct": true, "feedback": "Correcto: mencionas las herramientas concretas (Centro de Seguridad, Centro de Privacidad) que le dan control real, no solo una promesa genérica de 'seguridad'." },
+            { "text": "No hay forma de controlar qué datos usan las apps.", "correct": false, "feedback": "Esto es incorrecto e innecesariamente alarmante: EMUI 12 sí le da herramientas concretas de control de permisos y privacidad." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nivel-8-cierre",
+      "name": "NIVEL 8 · CIERRE DE VENTA",
+      "type": "narrative",
+      "intro": "El cliente ya resolvió todas sus dudas. Es momento de cerrar la venta.",
+      "cta": "Cerrar la venta",
+      "outro": "¡Venta cerrada! El cliente se va convencido con su nuevo nova Y73.",
+      "questions": [
+        {
+          "prompt": "¿Cuál es la mejor forma de cerrar en este punto?",
+          "options": [
+            { "text": "Resumir en una frase los 2-3 puntos que más le importaron al cliente y preguntar directamente: '¿Lo llevamos en azul o en negro?'", "correct": true, "feedback": "Correcto: cierras retomando lo que el cliente valoró y facilitas la decisión con una pregunta concreta (color), no abierta." },
+            { "text": "Seguir mencionando más especificaciones técnicas por si acaso.", "correct": false, "feedback": "Cuando el cliente ya está convencido, seguir dando información puede generar dudas nuevas en vez de cerrar la venta." }
+          ]
+        }
+      ]
+    }
+  ],
+  "ending": {
+    "eyebrow": "MISIÓN COMPLETADA",
+    "title": "¡Código NOVA desbloqueado!",
+    "story": "Reuniste las 4 letras resolviendo las dudas reales de un cliente sobre batería, resistencia, cámara, pantalla, almacenamiento y seguridad del HUAWEI nova Y73. Comparte tu resultado con tu supervisor."
+  }
+}

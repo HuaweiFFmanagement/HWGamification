@@ -1,0 +1,87 @@
+{
+  "id": "demo-hibrido-001",
+  "title": "MISIÓN: DOMINA EL PORTAFOLIO",
+  "intro": {
+    "eyebrow": "ENTRENAMIENTO DE CAMPO",
+    "story": "Un cliente difícil está a punto de entrar a la tienda. Antes de que llegue, el equipo necesita repasar contigo los puntos clave del portafolio. Supera cada nivel para reunir las piezas del código de la bóveda de premios.",
+    "cta": "Empezar misión"
+  },
+  "levels": [
+    {
+      "id": "nivel-1",
+      "name": "NIVEL 1 · OBJECIONES DE PRECIO",
+      "type": "narrative",
+      "intro": "Un cliente dice que el equipo le parece caro comparado con la competencia. Elige la mejor respuesta de venta.",
+      "cta": "Empezar nivel",
+      "outro": "¡Objeción manejada! El cliente sigue interesado.",
+      "questions": [
+        {
+          "prompt": "El cliente dice: 'Vi uno más barato en otra tienda'. ¿Qué le respondes?",
+          "options": [
+            { "text": "Tiene razón, ese es más barato pero peor.", "correct": false, "feedback": "Nunca desacredites la otra opción sin argumentos técnicos: suena a desesperación, no a asesoría." },
+            { "text": "Le explico las diferencias reales de cámara, batería y garantía frente a esa opción.", "correct": true, "feedback": "Así se maneja: comparas características concretas, no opiniones. El cliente toma una decisión informada." },
+            { "text": "Le insisto en que compre aquí porque tenemos meta del mes.", "correct": false, "feedback": "El cliente no compra para ayudarte a cumplir tu meta. Ese argumento no es sobre él." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nivel-2",
+      "name": "NIVEL 2 · FRAGMENTO A",
+      "type": "mission",
+      "fragment": "A",
+      "intro": "Responde correctamente para ganar el primer fragmento del código.",
+      "cta": "Buscar fragmento",
+      "outro": "¡Fragmento A conseguido!",
+      "questions": [
+        {
+          "prompt": "¿Cuál de estos es un argumento de venta válido y verificable?",
+          "options": [
+            { "text": "Autonomía de batería medida en pruebas de uso mixto.", "correct": true, "feedback": "Correcto: es un dato medible y defendible ante el cliente." },
+            { "text": "Es el mejor celular del mercado, punto.", "correct": false, "feedback": "Una afirmación absoluta sin dato de respaldo no convence a un cliente informado." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nivel-3",
+      "name": "NIVEL 3 · FRAGMENTO B",
+      "type": "mission",
+      "fragment": "B",
+      "intro": "Un segundo fragmento te espera si superas este repaso.",
+      "cta": "Buscar fragmento",
+      "outro": "¡Fragmento B conseguido!",
+      "questions": [
+        {
+          "prompt": "¿Qué debes hacer antes de ofrecer un accesorio adicional (venta cruzada)?",
+          "options": [
+            { "text": "Confirmar que el cliente ya decidió el equipo principal.", "correct": true, "feedback": "Correcto: la venta cruzada funciona mejor cuando la decisión principal ya está tomada." },
+            { "text": "Ofrecerlo antes de que el cliente decida el equipo, para subir el ticket.", "correct": false, "feedback": "Eso satura al cliente y puede hacer que abandone la decisión principal." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nivel-4",
+      "name": "NIVEL 4 · CIERRE DE VENTA",
+      "type": "narrative",
+      "intro": "El cliente parece convencido. Es momento de cerrar.",
+      "cta": "Cerrar la venta",
+      "outro": "¡Venta cerrada con confianza!",
+      "questions": [
+        {
+          "prompt": "¿Cuál es la mejor forma de cerrar la venta en este punto?",
+          "options": [
+            { "text": "Preguntar directamente: '¿Lo llevamos entonces?' y guiar el proceso de pago.", "correct": true, "feedback": "Correcto: un cierre directo y seguro, sin dar espacio a dudas nuevas innecesarias." },
+            { "text": "Seguir dando más información por si acaso.", "correct": false, "feedback": "Sobre-informar en el momento del cierre puede generar más dudas en vez de resolverlas." }
+          ]
+        }
+      ]
+    }
+  ],
+  "ending": {
+    "eyebrow": "MISIÓN COMPLETADA",
+    "title": "¡Reto superado!",
+    "story": "Reuniste las piezas del código y reforzaste tus argumentos de venta. Comparte tu resultado con tu supervisor."
+  }
+}

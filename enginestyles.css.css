@@ -1,0 +1,289 @@
+/* ============================================================
+   FF GAMES — motor de gamificación de entrenamiento
+   Lenguaje visual: página de producto HUAWEI (consumer.huawei.com)
+   Blanco predominante, tipografía grande y limpia, rojo como
+   único acento, secciones que alternan blanco/negro, botones píldora.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600&display=swap');
+
+:root{
+  --white: #ffffff;
+  --black: #0a0a0a;
+  --ink: #1a1a1a;
+  --ink-soft: #6e6e73;
+  --line: #e6e6e9;
+  --panel: #f5f5f7;
+  --red: #C7000B;
+  --red-soft: rgba(199,0,11,.08);
+  --ok: #1c8a4b;
+  --ok-soft: rgba(28,138,75,.08);
+  --bad: #a4171f;
+  --bad-soft: rgba(164,23,31,.08);
+  --font: 'Poppins', 'Segoe UI', Arial, sans-serif;
+  --radius: 14px;
+}
+
+*{ box-sizing:border-box; }
+
+.ffg{
+  width:100%;
+  max-width: 860px;
+  margin: 0 auto;
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--font);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: 0 30px 70px rgba(0,0,0,.10);
+  min-height: 560px;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+
+/* ---------- barra superior ---------- */
+.ffg-hud{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 18px 28px;
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+  letter-spacing: .04em;
+  color: var(--ink-soft);
+}
+.ffg-hud .ffg-hud-brand{
+  color: var(--ink);
+  font-weight:700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: 13px;
+}
+.ffg-hud .ffg-hud-mid{ display:flex; gap:18px; }
+.ffg-progress{
+  display:flex; gap:6px;
+}
+.ffg-progress span{
+  width:22px; height:4px; border-radius:2px; background: var(--line);
+  transition: background .2s ease;
+}
+.ffg-progress span.done{ background: var(--red); }
+.ffg-progress span.current{ background: var(--ink); }
+
+/* ---------- fragmentos / rastreador de código (modo misión) ---------- */
+.ffg-fragments{ display:flex; gap:6px; }
+.ffg-frag-slot{
+  width:28px; height:28px; border-radius:8px;
+  border:1.5px solid var(--line);
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; font-weight:700; color: var(--ink-soft);
+  background: var(--panel);
+  transition: all .2s ease;
+}
+.ffg-frag-slot.won{
+  border-color: var(--red);
+  color: var(--red);
+  background: var(--red-soft);
+}
+
+/* ---------- cuerpo ---------- */
+.ffg-body{
+  flex:1;
+  padding: 44px 40px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  overflow-y:auto;
+}
+
+.ffg-eyebrow{
+  font-size: 12px;
+  font-weight:700;
+  letter-spacing:.12em;
+  color: var(--red);
+  text-transform:uppercase;
+}
+
+.ffg-title{
+  font-size: 34px;
+  font-weight: 800;
+  line-height:1.15;
+  margin:0;
+  letter-spacing:-.01em;
+  color: var(--black);
+}
+
+.ffg-story{
+  color: var(--ink-soft);
+  font-size:16px;
+  line-height:1.65;
+  max-width: 58ch;
+  font-weight: 400;
+}
+
+/* ---------- panel de diálogo / feedback ---------- */
+.ffg-dialogue{
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  font-size: 15px;
+  line-height:1.6;
+  color: var(--ink);
+}
+.ffg-dialogue .who{
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  letter-spacing:.08em;
+  margin-bottom:8px;
+  text-transform:uppercase;
+}
+.ffg-dialogue.ok{ border-left-color: var(--ok); background: var(--ok-soft); }
+.ffg-dialogue.ok .who{ color: var(--ok); }
+.ffg-dialogue.bad{ border-left-color: var(--bad); background: var(--bad-soft); }
+.ffg-dialogue.bad .who{ color: var(--bad); }
+
+/* ---------- pregunta ---------- */
+.ffg-question{
+  font-size: 19px;
+  font-weight:600;
+  line-height:1.45;
+  color: var(--black);
+}
+
+.ffg-options{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.ffg-option{
+  text-align:left;
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  color: var(--ink);
+  padding: 15px 18px;
+  border-radius: var(--radius);
+  font-family: var(--font);
+  font-weight: 500;
+  font-size: 15px;
+  cursor:pointer;
+  transition: border-color .15s ease, background .15s ease;
+}
+.ffg-option:hover:not(:disabled){
+  border-color: var(--red);
+  background: var(--red-soft);
+}
+.ffg-option:disabled{ cursor:default; opacity:.6; }
+.ffg-option.correct{ border-color: var(--ok); background: var(--ok-soft); color: var(--ok); font-weight:600; }
+.ffg-option.incorrect{ border-color: var(--bad); background: var(--bad-soft); color: var(--bad); }
+
+/* ---------- botones de acción (píldora, como los CTA de huawei.com) ---------- */
+.ffg-btn{
+  align-self:flex-start;
+  font-family: var(--font);
+  font-weight:600;
+  font-size:14px;
+  letter-spacing:.01em;
+  padding: 14px 32px;
+  border-radius: 999px;
+  border:none;
+  cursor:pointer;
+  background: var(--black);
+  color:#fff;
+  transition: background .15s ease, transform .1s ease;
+}
+.ffg-btn:hover{ background: var(--red); transform: translateY(-1px); }
+.ffg-btn.ghost{
+  background:transparent;
+  border:1.5px solid var(--line);
+  color: var(--ink);
+}
+.ffg-btn.ghost:hover{ border-color: var(--ink); background: var(--panel); }
+
+/* ---------- pantallas de cierre ---------- */
+.ffg-screen-center{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  gap:16px;
+  padding: 50px 24px;
+}
+.ffg-big-number{
+  font-size: 56px;
+  font-weight:800;
+  color: var(--black);
+  letter-spacing: -.01em;
+}
+
+/* ---------- formulario de ingreso (jugador) ---------- */
+.ffg-field{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+.ffg-field label{
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.08em;
+  color: var(--ink-soft);
+  text-transform:uppercase;
+}
+.ffg-field input, .ffg-field select{
+  background: var(--panel);
+  border:1.5px solid var(--line);
+  color: var(--ink);
+  padding:13px 16px;
+  border-radius: 10px;
+  font-family: var(--font);
+  font-size:14.5px;
+}
+.ffg-field input:focus, .ffg-field select:focus{
+  outline:none;
+  border-color: var(--ink);
+}
+
+/* ---------- leaderboard (modo en vivo) ---------- */
+.ffg-lb{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.ffg-lb-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  background: var(--panel);
+  border:1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+}
+.ffg-lb-rank{
+  font-weight: 800;
+  color: var(--red);
+  width:26px;
+  font-size:14px;
+}
+.ffg-lb-name{ flex:1; font-weight:600; font-size:14px; color: var(--black); }
+.ffg-lb-score{ font-size:13px; color: var(--ink-soft); font-weight:600; }
+
+.ffg-code{
+  font-size: 44px;
+  letter-spacing: .18em;
+  color: var(--black);
+  font-weight:800;
+}
+
+@media (max-width: 520px){
+  .ffg-body{ padding: 28px 22px; }
+  .ffg-title{ font-size:26px; }
+  .ffg-big-number{ font-size:40px; }
+}
