@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FF Games — Jugar</title>
+<link rel="stylesheet" href="engine/styles.css" />
+<style>
+  body{ margin:0; background: var(--panel); padding: 40px 12px; min-height:100vh; display:flex; align-items:center; }
+</style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script src="engine/game-engine.js"></script>
+  <script src="engine/results-client.js"></script>
+  <script>
+    // ⚠️ Reemplaza esta URL por la de tu propia implementación de Apps Script
+    // (ver backend/Code.gs). Mientras tanto, el juego funciona igual, solo que
+    // no guardará resultados.
+    const WEB_APP_URL = ''; // ej: 'https://script.google.com/macros/s/XXXX/exec'
+
+    const params = new URLSearchParams(location.search);
+    const configUrl = params.get('config') || 'content/nova-y73-ksps.json';
+
+    const engine = new FFGame({
+      container: document.getElementById('app'),
+      configUrl,
+      resultsClient: WEB_APP_URL ? new FFResults({ webAppUrl: WEB_APP_URL }) : null,
+      mode: 'async',
+    });
+    engine.start();
+  </script>
+</body>
+</html>
