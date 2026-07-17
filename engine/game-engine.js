@@ -10,16 +10,25 @@
  *                 con un avatar y una burbuja de diálogo, y reacciona
  *                 distinto según la respuesta.
  *  - "mission":   pregunta que, al acertar, entrega un "fragmento" (letra o
- *                 número) que se acumula para armar una contraseña final
- *                 (estilo Breakout).
+ *                 número) que se acumula para armar un código final —
+ *                 estilo escape room / Breakout.
  *  - "wheel":     ronda sorpresa: una ruleta gira y selecciona al azar una
  *                 pregunta de un banco (level.questions); solo se responde
  *                 esa, no todo el banco.
  *
- * Además incluye micro-animaciones: destello de confeti al acertar, y un
- * pequeño "shake" al fallar — sin librerías externas.
+ * Mecánica de escape room:
+ *  - Reintento libre: si fallas una opción, esa opción queda bloqueada, se
+ *    ve su feedback, y puedes intentar con otra — no hay que acertar a la
+ *    primera para avanzar.
+ *  - Cronómetro por pregunta (por defecto 25s, configurable con
+ *    "timerSeconds" en el nivel o en la pregunta). Si el tiempo se agota,
+ *    se revela la respuesta correcta y no suma al puntaje, pero el juego
+ *    nunca se traba: siempre avanza.
+ *  - Al reunir todos los fragmentos, se ve una animación de "bóveda
+ *    abriéndose" antes de la pantalla final.
  *
- * No requiere build ni frameworks: se incluye con <script src="game-engine.js">.
+ * Incluye micro-animaciones: confeti al acertar, "shake" al fallar — sin
+ * librerías externas. No requiere build ni frameworks.
  */
 
 class FFGame {
@@ -34,8 +43,8 @@ class FFGame {
     this.state = {
       player: null,
       levelIndex: -1,
-      log: [],           // registro de cada respuesta: {levelId, questionIndex, correct, chosenText, timeMs}
-      fragments: [],      // fragmentos ganados (modo misión)
+      log: [],           // registro de cada pregunta resuelta: {levelId, questionIndex, correct, chosenText, attemptsWrong, timedOut, timeMs}
+      fragments: [],      // fragmentos ganados (modo misión / ruleta)
       score: 0,
       totalQuestions: 0,
       startedAt: null,
@@ -62,6 +71,7 @@ class FFGame {
           <div class="ffg-hud-brand">${this._esc(this.config.title || 'FF GAME')}</div>
           <div class="ffg-hud-mid">
             <div class="ffg-progress" id="ffg-progress"></div>
+            <div class="ffg-timer-pill" id="ffg-timer" style="display:none;">--</div>
           </div>
           <div class="ffg-fragments" id="ffg-fragments"></div>
         </div>
@@ -71,6 +81,7 @@ class FFGame {
     this.$body = this.container.querySelector('#ffg-body');
     this.$progress = this.container.querySelector('#ffg-progress');
     this.$fragments = this.container.querySelector('#ffg-fragments');
+    this.$timer = this.container.querySelector('#ffg-timer');
     this._renderProgress();
     this._renderFragmentTracker();
   }
@@ -86,17 +97,18 @@ class FFGame {
   }
 
   _renderFragmentTracker() {
-    const missionLevels = (this.config.levels || []).filter(l => l.type === 'mission' || (l.type === 'wheel' && l.fragment));
-    if (missionLevels.length === 0) { this.$fragments.innerHTML = ''; return; }
-    this.$fragments.innerHTML = missionLevels.map(l => {
+    const fragLevels = (this.config.levels || []).filter(l => l.fragment);
+    if (fragLevels.length === 0) { this.$fragments.innerHTML = ''; return; }
+    this.$fragments.innerHTML = fragLevels.map(l => {
       const won = this.state.fragments.includes(l.fragment);
-      return `<div class="ffg-frag-slot ${won ? 'won' : ''}">${won ? this._esc(l.fragment) : '?'}</div>`;
+      return `<div class="ffg-frag-slot ${won ? 'won' : ''}">${won ? this._esc(l.fragment) : '\u2013'}</div>`;
     }).join('');
   }
 
   // ---------------- INTRO / IDENTIFICACIÓN DEL JUGADOR ----------------
 
   _renderIntro() {
+    this._hideTimer();
     const intro = this.config.intro || {};
     this.$body.innerHTML = `
       <div class="ffg-eyebrow">${this._esc(intro.eyebrow || 'ENTRENAMIENTO')}</div>
@@ -138,6 +150,7 @@ class FFGame {
   // ---------------- NAVEGACIÓN ENTRE NIVELES ----------------
 
   _nextLevel() {
+    this._hideTimer();
     this.state.levelIndex++;
     this._renderProgress();
     const level = (this.config.levels || [])[this.state.levelIndex];
@@ -147,6 +160,7 @@ class FFGame {
   }
 
   _renderLevelIntro(level) {
+    this._hideTimer();
     if (level.type === 'wheel') { this._renderWheel(level); return; }
 
     this.$body.innerHTML = `
@@ -163,6 +177,7 @@ class FFGame {
   // ---------------- RONDA SORPRESA: RULETA ----------------
 
   _renderWheel(level) {
+    this._hideTimer();
     const questions = level.questions || [];
     const n = questions.length;
     const anglePer = 360 / n;
@@ -208,7 +223,7 @@ class FFGame {
     });
   }
 
-  // ---------------- PREGUNTAS ----------------
+  // ---------------- PREGUNTAS (con reintento libre + cronómetro) ----------------
 
   _renderQuestion(level, qIndex, opts = {}) {
     const q = level.questions[qIndex];
@@ -220,37 +235,85 @@ class FFGame {
 
     this.$body.innerHTML = `
       <div class="ffg-eyebrow">${this._esc(level.name || '')} · PREGUNTA ${qIndex + 1} DE ${level.questions.length}</div>
-      ${this._renderCharacterHeader(level.character)}
-      <p class="ffg-question ${level.character ? 'ffg-bubble' : ''}">${this._esc(q.prompt)}</p>
-      <div class="ffg-options">${optionsHtml}</div>
-      <div id="ffg-feedback-slot"></div>
+      <div class="ffg-qcard" id="ffg-qcard">
+        ${this._renderCharacterHeader(level.character)}
+        <p class="ffg-question ${level.character ? 'ffg-bubble' : ''}">${this._esc(q.prompt)}</p>
+        <div class="ffg-options">${optionsHtml}</div>
+        <div id="ffg-feedback-slot"></div>
+      </div>
     `;
 
+    const qcard = this.$body.querySelector('#ffg-qcard');
     const buttons = [...this.$body.querySelectorAll('.ffg-option')];
+    const triedWrong = new Set();
     const qStart = Date.now();
+    let settled = false;
+
+    const timerSeconds = q.timerSeconds || level.timerSeconds || 25;
+    const timer = this._startTimer(timerSeconds, () => {
+      if (settled) return;
+      settled = true;
+      buttons.forEach(b => b.disabled = true);
+      const correctIdx = q.options.findIndex(o => o.correct);
+      if (correctIdx >= 0) buttons[correctIdx].classList.add('correct');
+
+      this.state.totalQuestions++;
+      this.state.log.push({
+        levelId: level.id || level.name,
+        questionIndex: qIndex,
+        correct: false,
+        timedOut: true,
+        chosenText: null,
+        attemptsWrong: triedWrong.size,
+        timeMs: Date.now() - qStart,
+      });
+
+      const fbSlot = this.$body.querySelector('#ffg-feedback-slot');
+      fbSlot.innerHTML = `
+        <div class="ffg-dialogue bad">
+          <div class="who">⏱ Se acabó el tiempo</div>
+          ${this._esc((q.options[correctIdx] && q.options[correctIdx].feedback) || 'La respuesta correcta era: ' + ((q.options[correctIdx] && q.options[correctIdx].text) || ''))}
+        </div>
+        <button class="ffg-btn" id="ffg-continue">Continuar</button>
+      `;
+      fbSlot.querySelector('#ffg-continue').addEventListener('click', () => this._advance(level, qIndex, opts));
+    });
+
     buttons.forEach(btn => {
       btn.addEventListener('click', () => {
-        buttons.forEach(b => b.disabled = true);
-        const opt = q.options[Number(btn.dataset.i)];
+        const idx = Number(btn.dataset.i);
+        if (settled || triedWrong.has(idx)) return;
+        const opt = q.options[idx];
         const isCorrect = !!opt.correct;
-        btn.classList.add(isCorrect ? 'correct' : 'incorrect');
 
-        if (isCorrect) this._confetti(this.$body);
+        if (isCorrect) {
+          settled = true;
+          timer.stop();
+          buttons.forEach(b => b.disabled = true);
+          btn.classList.add('correct');
+          this._confetti(qcard);
 
-        this.state.totalQuestions++;
-        if (isCorrect) this.state.score++;
-        this.state.log.push({
-          levelId: level.id || level.name,
-          questionIndex: qIndex,
-          correct: isCorrect,
-          chosenText: opt.text,
-          timeMs: Date.now() - qStart,
-        });
+          this.state.totalQuestions++;
+          this.state.score++;
+          this.state.log.push({
+            levelId: level.id || level.name,
+            questionIndex: qIndex,
+            correct: true,
+            chosenText: opt.text,
+            attemptsWrong: triedWrong.size,
+            timeMs: Date.now() - qStart,
+          });
+        } else {
+          triedWrong.add(idx);
+          btn.classList.add('incorrect');
+          btn.disabled = true;
+          this._shake(qcard);
+        }
 
         const character = level.character;
         const who = character
           ? (isCorrect ? `${character.name} asiente ✔` : `${character.name} todavía no está convencido`)
-          : (isCorrect ? '✔ Correcto' : '✘ Intenta de nuevo la próxima');
+          : (isCorrect ? '✔ Correcto' : '✘ Casi. Intenta con otra opción');
 
         const fbSlot = this.$body.querySelector('#ffg-feedback-slot');
         fbSlot.innerHTML = `
@@ -258,21 +321,26 @@ class FFGame {
             <div class="who">${this._esc(who)}</div>
             ${this._esc(opt.feedback || '')}
           </div>
-          <button class="ffg-btn" id="ffg-continue">Continuar</button>
+          ${isCorrect ? `<button class="ffg-btn" id="ffg-continue">Continuar</button>` : ''}
         `;
-        fbSlot.querySelector('#ffg-continue').addEventListener('click', () => {
-          if (opts.singleQuestion) {
-            this._finishLevel(level);
-          } else {
-            this._renderQuestion(level, qIndex + 1);
-          }
-        });
+        if (isCorrect) {
+          fbSlot.querySelector('#ffg-continue').addEventListener('click', () => this._advance(level, qIndex, opts));
+        }
       });
     });
   }
 
+  _advance(level, qIndex, opts) {
+    if (opts.singleQuestion) {
+      this._finishLevel(level);
+    } else {
+      this._renderQuestion(level, qIndex + 1, opts);
+    }
+  }
+
   _finishLevel(level) {
-    if ((level.type === 'mission' || level.type === 'wheel') && level.fragment) {
+    this._hideTimer();
+    if (level.fragment) {
       this.state.fragments.push(level.fragment);
       this._renderFragmentTracker();
     }
@@ -290,14 +358,19 @@ class FFGame {
   // ---------------- CIERRE Y ENVÍO DE RESULTADOS ----------------
 
   async _renderEnding() {
+    this._hideTimer();
     const ending = this.config.ending || {};
     const timeMs = Date.now() - this.state.startedAt;
     const pct = this.state.totalQuestions ? Math.round((this.state.score / this.state.totalQuestions) * 100) : 0;
 
+    const fragLevels = (this.config.levels || []).filter(l => l.fragment);
+    if (fragLevels.length > 0) {
+      await this._playVaultOpening();
+    }
+
     let passwordBlock = '';
-    const missionLevels = (this.config.levels || []).filter(l => l.fragment);
-    if (missionLevels.length > 0) {
-      const assembled = missionLevels.map(l => this.state.fragments.includes(l.fragment) ? l.fragment : '_').join('');
+    if (fragLevels.length > 0) {
+      const assembled = fragLevels.map(l => this.state.fragments.includes(l.fragment) ? l.fragment : '_').join('');
       passwordBlock = `<div class="ffg-big-number">${this._esc(assembled)}</div><p class="ffg-story">Código final ensamblado</p>`;
     }
 
@@ -339,6 +412,21 @@ class FFGame {
     }
   }
 
+  // ---------------- BÓVEDA (animación de victoria) ----------------
+
+  _playVaultOpening() {
+    return new Promise(resolve => {
+      this.$body.innerHTML = `
+        <div class="ffg-vault-stage">
+          <div class="ffg-vault-door left"></div>
+          <div class="ffg-vault-door right"></div>
+          <div class="ffg-vault-label">Desbloqueando…</div>
+        </div>
+      `;
+      setTimeout(resolve, 1300);
+    });
+  }
+
   // ---------------- PERSONAJES ----------------
 
   _renderCharacterHeader(character) {
@@ -359,7 +447,43 @@ class FFGame {
     return name.split(' ').filter(Boolean).map(w => w[0]).slice(0, 2).join('').toUpperCase();
   }
 
+  // ---------------- CRONÓMETRO ----------------
+
+  _startTimer(seconds, onTimeout) {
+    const pill = this.$timer;
+    pill.style.display = 'inline-flex';
+    let t = seconds;
+    const render = () => {
+      pill.textContent = t + 's';
+      pill.classList.toggle('danger', t <= 5);
+    };
+    render();
+    const id = setInterval(() => {
+      t -= 1;
+      if (t <= 0) {
+        clearInterval(id);
+        pill.style.display = 'none';
+        pill.classList.remove('danger');
+        onTimeout();
+        return;
+      }
+      render();
+    }, 1000);
+    return { stop: () => { clearInterval(id); pill.style.display = 'none'; pill.classList.remove('danger'); } };
+  }
+
+  _hideTimer() {
+    if (this.$timer) this.$timer.style.display = 'none';
+  }
+
   // ---------------- MICRO-ANIMACIONES ----------------
+
+  _shake(el) {
+    el.classList.remove('ffg-shake');
+    void el.offsetWidth; // reinicia la animación aunque se dispare seguido
+    el.classList.add('ffg-shake');
+    setTimeout(() => el.classList.remove('ffg-shake'), 500);
+  }
 
   _confetti(containerEl) {
     const layer = document.createElement('div');

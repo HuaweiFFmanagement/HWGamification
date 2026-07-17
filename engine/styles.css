@@ -397,3 +397,71 @@
   border-top: 16px solid var(--red);
   z-index: 2;
 }
+
+/* ============================================================
+   AMPLIACIÓN: escape room — cronómetro, bóveda, tarjeta de pregunta
+   ============================================================ */
+
+/* ---------- cronómetro por pregunta ---------- */
+.ffg-timer-pill{
+  display:inline-flex;
+  align-items:center; justify-content:center;
+  background: var(--black); color:#fff;
+  padding: 6px 14px; border-radius:999px;
+  font-size:12px; font-weight:700; min-width:38px; text-align:center;
+}
+.ffg-timer-pill.danger{
+  background: var(--red);
+  animation: ffg-timer-pulse 1s infinite;
+}
+@keyframes ffg-timer-pulse{
+  0%,100%{ box-shadow: 0 0 0 0 rgba(199,0,11,.35); }
+  50%{ box-shadow: 0 0 0 8px rgba(199,0,11,0); }
+}
+
+/* ---------- tarjeta de pregunta (para poder sacudirla completa) ---------- */
+.ffg-qcard{ display:flex; flex-direction:column; gap:20px; }
+@keyframes ffg-card-shake{
+  0%,100%{ transform:translateX(0); }
+  20%{ transform:translateX(-8px); }
+  40%{ transform:translateX(8px); }
+  60%{ transform:translateX(-6px); }
+  80%{ transform:translateX(6px); }
+}
+.ffg-qcard.ffg-shake{ animation: ffg-card-shake .5s ease; }
+
+/* fragmentos ganados: se ven más como piezas de bóveda */
+.ffg-frag-slot{
+  width:34px; height:40px; border-radius:8px;
+}
+.ffg-frag-slot.won{
+  background: var(--black); color:#fff; border-color: var(--red);
+}
+
+/* ---------- bóveda: animación de apertura al terminar ---------- */
+.ffg-vault-stage{
+  position:relative;
+  height: 300px;
+  border-radius: 16px;
+  overflow:hidden;
+  background: var(--white);
+  display:flex; align-items:center; justify-content:center;
+  margin: 20px 0;
+}
+.ffg-vault-door{
+  position:absolute; top:0; bottom:0; width:50%;
+  background: var(--black);
+}
+.ffg-vault-door.left{ left:0; animation: ffg-vault-open-left 1.2s ease forwards; }
+.ffg-vault-door.right{ right:0; animation: ffg-vault-open-right 1.2s ease forwards; }
+@keyframes ffg-vault-open-left{ to{ transform: translateX(-100%); } }
+@keyframes ffg-vault-open-right{ to{ transform: translateX(100%); } }
+.ffg-vault-label{
+  position:relative; z-index:2; color:#fff;
+  font-weight:700; letter-spacing:.1em; font-size:13px; text-transform:uppercase;
+  animation: ffg-vault-label-fade 1.2s ease forwards;
+}
+@keyframes ffg-vault-label-fade{
+  0%,55%{ opacity:1; }
+  100%{ opacity:0; }
+}
