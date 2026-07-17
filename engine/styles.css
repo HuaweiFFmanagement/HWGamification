@@ -287,3 +287,113 @@
   .ffg-title{ font-size:26px; }
   .ffg-big-number{ font-size:40px; }
 }
+
+/* ============================================================
+   AMPLIACIÓN: personajes, animaciones y ruleta de preguntas
+   ============================================================ */
+
+/* ---------- personaje que pregunta ---------- */
+.ffg-character{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.ffg-avatar{
+  width:44px; height:44px; border-radius:50%;
+  background: var(--black); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:14px;
+  flex-shrink:0;
+}
+.ffg-character-meta{ display:flex; flex-direction:column; }
+.ffg-character-name{ font-weight:700; font-size:14px; color: var(--black); }
+.ffg-character-role{ font-size:12px; color: var(--ink-soft); }
+
+/* burbuja de diálogo con "colita" apuntando al avatar */
+.ffg-bubble{
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-left: 8px;
+}
+.ffg-bubble::before{
+  content:'';
+  position:absolute;
+  top:-8px; left:20px;
+  width:14px; height:14px;
+  background: var(--panel);
+  border-left: 1px solid var(--line);
+  border-top: 1px solid var(--line);
+  transform: rotate(45deg);
+}
+
+/* ---------- animaciones de acierto / error ---------- */
+@keyframes ffg-shake{
+  10%,90%{ transform:translateX(-2px); }
+  20%,80%{ transform:translateX(4px); }
+  30%,50%,70%{ transform:translateX(-7px); }
+  40%,60%{ transform:translateX(7px); }
+}
+.ffg-option.incorrect{ animation: ffg-shake .5s ease; }
+
+@keyframes ffg-pop{
+  0%{ transform:scale(1); }
+  45%{ transform:scale(1.035); }
+  100%{ transform:scale(1); }
+}
+.ffg-option.correct{ animation: ffg-pop .4s ease; }
+
+/* ---------- confeti (destello breve al acertar) ---------- */
+.ffg-confetti-layer{
+  position:absolute;
+  inset: 0;
+  overflow:hidden;
+  pointer-events:none;
+  z-index: 5;
+}
+.ffg-confetti-piece{
+  position:absolute;
+  top:-16px;
+  width:7px; height:13px;
+  border-radius:2px;
+  opacity:1;
+  transform: rotate(var(--rot, 0deg));
+  animation: ffg-confetti-fall 1.2s ease-in forwards;
+}
+@keyframes ffg-confetti-fall{
+  to{ transform: translateY(160px) rotate(calc(var(--rot, 0deg) + 220deg)); opacity:0; }
+}
+
+/* ---------- ruleta de la ronda sorpresa ---------- */
+.ffg-wheel-wrap{
+  position:relative;
+  width: 220px; height:220px;
+  margin: 8px auto 4px;
+}
+.ffg-wheel{
+  width:100%; height:100%;
+  border-radius:50%;
+  border: 4px solid var(--white);
+  box-shadow: 0 0 0 2px var(--line), 0 20px 40px rgba(0,0,0,.15);
+  position:relative;
+  transform: rotate(0deg);
+}
+.ffg-wheel-label{
+  position:absolute;
+  top:50%; left:50%;
+  width:0; height:0;
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-weight:800; font-size:14px;
+}
+.ffg-wheel-pointer{
+  position:absolute;
+  top:-6px; left:50%;
+  width:0; height:0;
+  transform: translateX(-50%);
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 16px solid var(--red);
+  z-index: 2;
+}
